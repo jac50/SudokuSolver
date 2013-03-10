@@ -8,6 +8,8 @@ Note that there are a couple of functions that were added to start the human sol
 
 + Cleaned output
 + Tidied code
++ Deleted TempGrid. Wasn't needed.
+
  
 
 Version 1.1.0 (March 10th, 2013)
