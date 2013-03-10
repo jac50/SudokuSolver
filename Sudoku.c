@@ -16,8 +16,6 @@ void solveSudoku(void);
 int getCandidates(int, int, int * );
 void getCol(int, int *);
 void getBox(int , int , int *);
-
-
 int getNextBlank(int row,int col, int *nextPos);
 void setTempGrid();
 void intro();
@@ -28,8 +26,7 @@ int main(void){
     intro();
     inputSudoku();
     setTempGrid();
-
-    printf("\n\n\n\n");
+    printf("\n\n");
     solveSudoku();
     getchar();
     return 0;
@@ -38,30 +35,27 @@ int main(void){
 void populateGrid(void){
 
 	int i=0,j=0;
-		 for (i=0;i < 9;++i); { 
-			 for (j=0;j < 9;++j) {
-				 grid[i][j]=0;
-			 }
-		 }
-	 }
-void output(){
-	int i=0, j=0;
-		 for (i=0; i< 9 ;++i){
-			printf("\n");
-			if (i == 0 || i == 3 || i == 6 ){
-				printf("  --------------------------------------------------  \n");
-			}
-			for (j=0;j < 9 ;++j){
-				if (j==2 || j==5 || j==8) printf("  %d  |", tempGrid[i][j]);		
-				else printf("  %d   ", tempGrid[i][j]);
-				 
-			}
+	for (i=0;i<9;++i) { 
+		for (j=0;j<9;++j) {
+			grid[i][j]=0;
 		}
 	}
-
-
+}
+void output(){
+	int i=0, j=0;
+	for (i=0; i< 9 ;++i){
+		printf("\n");
+		if (i == 0 || i == 3 || i == 6 ){
+			printf("  --------------------------------------------------  \n");
+		}
+		for (j=0;j < 9 ;++j){
+			if (j==2 || j==5 || j==8) printf("  %d  |", tempGrid[i][j]);		
+			else printf("  %d   ", tempGrid[i][j]);				 
+		}
+	}
+}
 void inputSudoku(void){
-	int temp[9] = {0,0,0,0,0,0,0,0,0}, i = 0, j=0;
+	int i = 0, j=0;
 	FILE *puzzle = fopen("Puzzle.txt", "r");
 	char str[9],eol;
 	if (puzzle!=NULL)
@@ -77,11 +71,10 @@ void inputSudoku(void){
 		}
 		fclose(puzzle);
 	}
-	else {perror("Puzzle.txt");}
-				
+	else perror("Puzzle.txt");				
 }
 int getCandidates(int row, int col, int* cands){
-	int temp[9];
+
 	int i = 0, j = 0, k = 0,array[9] = {0,0,0,0,0,0,0,0,0}, tempCol[9] = {0,0,0,0,0,0,0,0,0}, tempBox[9] = {0,0,0,0,0,0,0,0,0}, tempRow[9] = {0,0,0,0,0,0,0,0,0};
 	memcpy(tempRow,tempGrid[row],sizeof(tempRow));
 	getCol(col, tempCol);
@@ -98,42 +91,34 @@ int getCandidates(int row, int col, int* cands){
 		if (array[i] == 0){
 		++j;
 		cands[k] = i + 1;
-		k++;
-	
-		}
-			
+		k++;	
+		}			
 	}
 	if (j > 0) return j;
 	else return 0;	
-	
-			
-
 }				
 void getCol(int numberOfCol, int *col){
-	int i,j;
+	int i;
 	for (i=0;i<9;++i){col[i] = tempGrid[i][numberOfCol];}
 	}
 void getBox(int row, int col, int *tempBlock){
-	int r,c,i,j;
+	int i,j;
 	if (row<3){i=1;}
 	else if (row <6 && row > 2){i=4;}
 	else {i = 7;}
 	if (col<3){j=1;}
 	else if (col <6 && col > 2){j=4;}
 	else {j = 7;}
-			tempBlock[0] = tempGrid[i-1][j-1];
-			tempBlock[1] = tempGrid[i][j-1];
-			tempBlock[2] = tempGrid[i+1][j-1];
-			tempBlock[3] = tempGrid[i-1][j];
-			tempBlock[4] = tempGrid[i][j];
-			tempBlock[5] = tempGrid[i+1][j];
-			tempBlock[6] = tempGrid[i-1][j+1];
-			tempBlock[7] = tempGrid[i][j+1];
-			tempBlock[8] = tempGrid[i+1][j+1];	
-	
-	}
-
-	
+	tempBlock[0] = tempGrid[i-1][j-1];
+	tempBlock[1] = tempGrid[i][j-1];
+	tempBlock[2] = tempGrid[i+1][j-1];
+	tempBlock[3] = tempGrid[i-1][j];
+	tempBlock[4] = tempGrid[i][j];
+	tempBlock[5] = tempGrid[i+1][j];
+	tempBlock[6] = tempGrid[i-1][j+1];
+	tempBlock[7] = tempGrid[i][j+1];
+	tempBlock[8] = tempGrid[i+1][j+1];		
+}
 int bruteForce(int row,int col){
 	// ----- Declarations -----
 	int i=0, flag = 1, candFlag = 1,blankFlag = 1, nextPos[2] = {0,0};
@@ -171,12 +156,13 @@ int getNextBlank(int row,int col, int *nextPos){
 			
 				
 		}
-		i++; j = -1;	
+		i++; 
+		j = -1;	
 		}
 	return 0;	
 	}
 void solveSudoku(){
-	int firstRow = 0,firstCol = 0,solvedFlag = 0,firstPos[2] = {0,0};
+	int solvedFlag = 0,firstPos[2] = {0,0};
 	setTempGrid();
 	getNextBlank( 0 , -1 , firstPos);
 	
@@ -192,17 +178,10 @@ void setTempGrid(){
 		}
 void intro(void){
 	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("Welcome to Sudoku Solver Version One\n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("Please have your puzzle file inside the same folder as the program. Many Thanks\n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
-	printf("******************************************* \n");
+	printf("    Welcome to Sudoku Solver Version 1.1.0\n");
+	printf("******************************************* \n\n\n");	
+	printf("Please have your puzzle file inside the same folder as the program.\n");
+	
 	}
 	
 	
