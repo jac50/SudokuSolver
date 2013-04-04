@@ -1,6 +1,12 @@
 ChangeLog for Sudoku Solver
 ===========================
 
+Version 1.1.2 (March 10th, 2013)
+--------------------------------
+
++ Added in menu. This allows the user to select whether they want to solve 1 puzzle or all the puzzles in Puzzle.
++ Added in an input parameter to inputSudoku
+
 Version 1.1.1 (March 10th, 2013)
 --------------------------------
 
@@ -9,6 +15,7 @@ Note that there are a couple of functions that were added to start the human sol
 + Cleaned output
 + Tidied code
 + Deleted TempGrid. Wasn't needed.
++ Added more puzzles
 
  
 
