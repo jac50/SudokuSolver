@@ -5,28 +5,58 @@
 
 /*----- Global Declarations ----- */
 int grid[9][9];
-char flag,flag2;
 
 /*----- Function Declarations -----*/
 void populateGrid(void);
 void output(void);
-void inputSudoku(void);
+int inputSudoku(char []);
+int inputSudokuOtherVersion (char []);
 void solveSudoku(void);
 int getCandidates(int, int, int * );
 void getCol(int, int *);
 void getBox(int , int , int *);
 int getNextBlank(int row,int col, int *nextPos);
 void intro();
+void menu();
 
-/* ----- Start of Main ----- */
 
 int main(void){
-    intro();
-    inputSudoku();
-    printf("\n\n");
-    solveSudoku();
-    getchar();
-    return 0;
+	int input = 0;
+	int error = 0;
+	int i;
+	char puzzleToSolve[20] = "Puzzle/Puzzle00";
+	intro();
+	menu();
+	scanf("%i",&input);
+ //--------- Need to move all of the code below to a new function and tidy up	
+	switch (input) {
+		case 1: strcpy(puzzleToSolve,"Puzzles/Puzzle001.txt");
+			break;
+		case 2: strcpy(puzzleToSolve,"Puzzles/Puzzle001.txt"); // Start with First puzzle
+			break;
+		case 3: printf("Running puzzle file from the website\n");
+			inputSudokuOtherVersion("Puzzles/PuzzleList.txt");
+			output();		
+		case 4: return 0;
+		
+		default: 
+			printf("Assume you only want Puzzle.txt solved.");
+			break;		
+		}
+	
+		for (i = 1;;i++){
+			strcpy(puzzleToSolve,"Puzzles/Puzzle00");
+				
+			strcat(puzzleToSolve,".txt");
+			error = inputSudoku("Puzzles//Puzzle001.txt");
+			printf("\n\n");
+			solveSudoku();
+			getchar();
+			if (error == 1) break;
+			
+		
+		}
+	    return 0;
 }
 /* ----- Populate the Sudoku Grid with Zero's ----- */
 void populateGrid(void){
@@ -52,12 +82,11 @@ void output(){
 	}
 	printf("\n -------------------------------------------------  \n");
 }
-void inputSudoku(void){
+int inputSudoku(char puzzleToSolve []){
 	int i = 0, j=0;
-	FILE *puzzle = fopen("Puzzle.txt", "r");
+	FILE *puzzle = fopen(puzzleToSolve, "r");
 	char str[9],eol;
-	if (puzzle!=NULL)
-	{
+	if (puzzle!=NULL) {
 		for (i=0;i<9;++i){
 			fscanf(puzzle,"%c%c%c%c%c%c%c%c%c%c", &str[0], &str[1], &str[2], &str[3], &str[4],&str[5],&str[6],&str[7],&str[8],&eol);
 			for (j=0;j<9;++j){
@@ -67,9 +96,45 @@ void inputSudoku(void){
 			if (feof (puzzle)){break;}
 		}
 		fclose(puzzle);
+		return 0;
 	}
-	else perror("Puzzle.txt");				
+	else {
+		printf("No more puzzles to solve. Program will now exit.");			
+		return 1;
+	}
 }
+int inputSudokuOtherVersion(char puzzleFileToSolve []){
+	
+	int i = 0, j = 0,nbytes, bytes_read;
+	size_t nnbytes;
+	FILE *puzzle = fopen(puzzleFileToSolve, "r");
+	int puzzlenumber = 1;
+	char * puzzleTemp;
+	printf("%s",puzzleFileToSolve);	
+	if (puzzle!=NULL){
+		//for (i = 0;i < puzzlenumber;i++){
+			puzzleTemp = (char *) malloc (100 * sizeof(char) + 1);
+			bytes_read = getline(&puzzleTemp,&nnbytes,puzzle);
+			
+		//}
+		for (i = 0; i<9;i++){
+			for (j=0;j<9;j++){
+				if ((*(puzzleTemp + (i)*9 + j)) == '.'){
+					grid[i][j] = 0;
+				} 
+				else grid[i][j] = (*(puzzleTemp + (i)*9 + j)) - 48;
+			}
+
+		}
+		fclose(puzzle);
+		return 0;
+	}
+	else printf("Error. Could not open puzzle");
+	return 0;
+}
+
+	
+	
 int getCandidates(int row, int col, int* cands){
 	int i = 0, j = 0, k = 0,array[9] = {0,0,0,0,0,0,0,0,0}, tempCol[9] = {0,0,0,0,0,0,0,0,0}, tempBox[9] = {0,0,0,0,0,0,0,0,0}, tempRow[9] = {0,0,0,0,0,0,0,0,0};
 	memcpy(tempRow,grid[row],sizeof(tempRow));
@@ -168,14 +233,24 @@ void solveSudoku(){
 		printf("\n\nThe sudoku has been solved.");
 	}
 }
-
 void intro(void){
 	printf("*********************************************** \n");
-	printf("    Welcome to Sudoku Solver Version 1.1.0\n");
+	printf("    Welcome to Sudoku Solver Version 1.1.1 \n");
 	printf("*********************************************** \n");	
 	printf("Please have your puzzle file inside the same folder as the program.\n");
 	
-	}
+}
+void menu(void) {
+	printf(" ----- Menu -----\n");
+	printf("1. Solve one puzzle (Puzzle.txt)\n");
+	printf("2. Solve all puzzles in Puzzle folder\n");
+	printf("3. Solve an entire puzzle file\n");
+	printf("4. Exit\n");
+	printf(" Your Choice : ");
+}
+
+	
+
 	
 	
 	
