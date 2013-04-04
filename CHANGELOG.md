@@ -6,6 +6,7 @@ Version 1.1.2 (March 10th, 2013)
 
 + Added in menu. This allows the user to select whether they want to solve 1 puzzle or all the puzzles in Puzzle.
 + Added in an input parameter to inputSudoku
++ Added another sudoku file type from john's link
 
 Version 1.1.1 (March 10th, 2013)
 --------------------------------
